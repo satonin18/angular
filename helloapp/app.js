@@ -51,37 +51,32 @@ let koffSum = (x: number, y: number) => {
     x *= 2;
     return x + y;
 };
-
 */
 // let el = this.document.getElementById("content");
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
-var Data;
-(function (Data) {
-    var Personnel;
-    (function (Personnel) {
-        var Employee = /** @class */ (function () {
-            function Employee(name) {
-                this.name = name;
-            }
-            return Employee;
-        }());
-        Personnel.Employee = Employee;
-    })(Personnel = Data.Personnel || (Data.Personnel = {}));
-    var Clients;
-    (function (Clients) {
-        var VipClient = /** @class */ (function () {
-            function VipClient(name) {
-                this.name = name;
-            }
-            return VipClient;
-        }());
-        Clients.VipClient = VipClient;
-    })(Clients = Data.Clients || (Data.Clients = {}));
-})(Data || (Data = {}));
-var employee = Data.Personnel.Employee;
-var client = Data.Clients.VipClient;
-var tom = new employee("Tom");
-console.log(tom.name);
-var sam = new client("Sam");
-console.log(sam.name);
+//---------------------------------------------------------
+/*
+мы можем использовать 5 различных систем модулей:
+ES 2015
+tsc --module commonjs main.ts // для CommonJS
+tsc --module amd main.ts // для AMD (Asynchronys Module Defenition)
+tsc --module umd main.ts // для UMD (Universal Module Defenition)
+tsc --module system main.ts // для SytemJS
+
+для загрузки модулей можно выбрать один из следующих загрузчиков:
+RequireJS: RequireJS use синтаксис,известный как асинхронное определение модуля
+    или (AMD)-asynchronous module definition
+Browserify: use синтаксис CommonJS
+SystemJS: универсальный загрузчик, может применяться для модулей любого типа
+*/
+////<reference path="devices.ts"/> 
+//use module
+import { /*Device,*/ Phone, Call } from "./devices";
+var iphone = new Phone("iPhone X");
+Call(iphone);
+// import * as dev from "./devices";
+// let iphone: devPhone = new dev.Phone("iPhone X");
+// dev.Call(iphone);
+// import SmartWatch from "./smartwatch";
+// let iwatch: SmartWatch = new SmartWatch();

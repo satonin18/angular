@@ -51,33 +51,38 @@ let koffSum = (x: number, y: number) => {
     x *= 2;
     return x + y;
 };
-
 */
 // let el = this.document.getElementById("content");
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
+//---------------------------------------------------------
+/*
+мы можем использовать 5 различных систем модулей:
+ES 2015
+tsc --module commonjs main.ts // для CommonJS
+tsc --module amd main.ts // для AMD (Asynchronys Module Defenition)
+tsc --module umd main.ts // для UMD (Universal Module Defenition)
+tsc --module system main.ts // для SytemJS
 
-namespace Data{
-    export namespace Personnel {
-        export class Employee {
-         
-            constructor(public name: string){
-            }
-        }
-    }
-    export namespace Clients {
-        export class VipClient {
-         
-            constructor(public name: string){
-            }
-        }
-    }
-}
-import employee = Data.Personnel.Employee;
-import client = Data.Clients.VipClient; 
+для загрузки модулей можно выбрать один из следующих загрузчиков:
+RequireJS: RequireJS use синтаксис,известный как асинхронное определение модуля
+    или (AMD)-asynchronous module definition
+Browserify: use синтаксис CommonJS
+SystemJS: универсальный загрузчик, может применяться для модулей любого типа
+*/
 
-let tom = new employee("Tom")
-console.log(tom.name);
- 
-let sam = new client("Sam");
-console.log(sam.name);
+////<reference path="devices.ts"/> 
+
+//use module
+
+import {/*Device,*/ Phone, Call} from "./devices";
+
+let iphone: Phone = new Phone("iPhone X");
+Call(iphone);
+
+// import * as dev from "./devices";
+// let iphone: devPhone = new dev.Phone("iPhone X");
+// dev.Call(iphone);
+
+// import SmartWatch from "./smartwatch";
+// let iwatch: SmartWatch = new SmartWatch();
