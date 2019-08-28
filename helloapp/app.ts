@@ -27,6 +27,17 @@ let unionValue: strOrNumType = "hello work";
 if(typeof unionValue === "string")
     strLength = (<string> unionValue).length;
     strLength = (unionValue as string).length;
+------------------------------------------------------------
+function getName(firstName: string,
+    lastName?: string) {
+    lastName: string = default_Username()) {
+    ...nameArray: string[]) {
+
+    if (lastName)
+        return firstName + " " + lastName;
+    else
+        return firstName;
+}
 */
 let el = this.document.getElementById("content");
  
