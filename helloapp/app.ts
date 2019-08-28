@@ -56,25 +56,30 @@ let koffSum = (x: number, y: number) => {
 let el = this.document.getElementById("content");
  
 class User{
-    static counter: number = 0;
+    // default = public
+    private static counter: number = 0;
  
-    static getCounter(counter: number): number {
-        return counter;
+    static getCounter(): number {
+        return User.counter;
     }
 
-
-    name : string;
-    age : number;
-    constructor(_name:string, _age: number){
-        this.name = _name;
-        this.age = _age;
+    // default = by constructor(with Модификатор доступа)
+    //protected name : string;
+    //protected age : number;
+    constructor(
+        private name:string,
+        private age: number
+        ){
+        //this.name = name;
+        //this.age = age;
         User.counter++;
     }
+    
     getInfo(): string {
         return "Имя: " + this.name + ", возраст: " + this.age;
     }
 }
-let first : User = new User("first", 5);
-let tom : User = new User("Том", 5);
+let first : User = new User("first", 1);
+let tom : User = new User("Том", 15);
 console.log(tom.getInfo());
-el.innerHTML = tom.getInfo() + " User.counter = " + User.counter;
+el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();

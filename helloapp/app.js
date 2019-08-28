@@ -55,21 +55,27 @@ let koffSum = (x: number, y: number) => {
 */
 var el = this.document.getElementById("content");
 var User = /** @class */ (function () {
-    function User(_name, _age) {
-        this.name = _name;
-        this.age = _age;
+    // default = by constructor(with Модификатор доступа)
+    //protected name : string;
+    //protected age : number;
+    function User(name, age) {
+        this.name = name;
+        this.age = age;
+        //this.name = name;
+        //this.age = age;
         User.counter++;
     }
-    User.getCounter = function (counter) {
-        return counter;
+    User.getCounter = function () {
+        return User.counter;
     };
     User.prototype.getInfo = function () {
         return "Имя: " + this.name + ", возраст: " + this.age;
     };
+    // default = public
     User.counter = 0;
     return User;
 }());
-var first = new User("first", 5);
-var tom = new User("Том", 5);
+var first = new User("first", 1);
+var tom = new User("Том", 15);
 console.log(tom.getInfo());
-el.innerHTML = tom.getInfo() + " User.counter = " + User.counter;
+el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();
