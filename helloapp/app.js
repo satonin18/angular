@@ -58,6 +58,7 @@ var User = /** @class */ (function () {
     function User(
     /*private*/ name, 
     /*private*/ age) {
+        this.id = User.counter;
         this.name = name;
         this.age = age;
         User.counter++;
@@ -65,28 +66,26 @@ var User = /** @class */ (function () {
     User.getCounter = function () {
         return User.counter;
     };
-    Object.defineProperty(User.prototype, "name", {
-        get: function () {
-            return this._name;
-        },
-        set: function (name) {
-            this._name = name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(User.prototype, "age", {
-        get: function () {
-            return this._age;
-        },
-        set: function (age) {
-            this._age = age;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    User.prototype.getId = function () {
+        return this.id;
+    };
+    User.prototype.getName = function () {
+        return this.name;
+    };
+    User.prototype.setName = function (name) {
+        this.name = name;
+    };
+    User.prototype.getAge = function () {
+        return this.age;
+    };
+    User.prototype.setAge = function (age) {
+        this.age = age;
+    };
+    User.prototype.getFullName = function (username) {
+        return this.name + " " + username;
+    };
     User.prototype.getInfo = function () {
-        return "Имя: " + this.name + ", возраст: " + this.age;
+        return "Id: " + this.id + ", Имя: " + this.name + ", возраст: " + this.age;
     };
     // default = public
     User.counter = 0;
@@ -95,7 +94,59 @@ var User = /** @class */ (function () {
 //in extendable classes need ЯВНО call super(...);
 var first = new User("first", 1);
 var tom = new User("Том", 15);
-tom.name = "Rename"; // срабатывает set-метод
-console.log(tom.name); // срабатывает get-метод
+tom.setName("Rename");
+console.log(tom.getName);
 console.log(tom.getInfo());
-el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();
+el.innerHTML = tom.getInfo();
+var p = { x: 10, y: 20 };
+console.log(p);
+var employee = {
+    id: -1,
+    name: "Alice",
+    age: 23,
+    getFullName: function (surname) {
+        return this.name + " " + surname;
+    }
+};
+var manager = {
+    id: -2,
+    name: "Tom"
+};
+function buildUser(userId, userName) {
+    return { id: userId, name: userName };
+}
+var worker = buildUser(-3, "Bill");
+function getEmployeeInfo(user) {
+    console.log("id: " + user.id);
+    console.log("name: " + user.name);
+    var fullName = employee.getFullName("Tompson");
+    console.log(fullName); // Alice Tompson
+}
+getEmployeeInfo(employee);
+var simpleBuilder = function (name, surname) {
+    return "Mr. " + name + " " + surname;
+};
+var fullName = simpleBuilder("Bob", "Simpson");
+console.log(fullName); // Mr. Bob Simpson
+var phones = ["iPhone 7", "HTC 10", "HP Elite x3"];
+var myPhone = phones[0];
+console.log(myPhone);
+var colors = {};
+colors["red"] = "#ff0000";
+colors["green"] = "#00ff00";
+colors["blue"] = "#0000ff";
+console.log(colors["red"]);
+function personBuilder() {
+    var person = function (name, surname) {
+        person.fullName = name + " " + surname;
+    };
+    person.authenticate = function () {
+        console.log(person.fullName + " входит в систему с паролем " + person.password);
+    };
+    return person;
+}
+var humon = personBuilder();
+humon("Tom", "Simpson");
+humon.password = "qwerty";
+humon.authenticate();
+//-------------------------------------------------------------

@@ -54,8 +54,22 @@ let koffSum = (x: number, y: number) => {
 
 */
 let el = this.document.getElementById("content");
- 
-class User{
+
+interface IUser {
+    //default public
+    getId(): number ;
+
+    getName(): string ;
+    setName(name: string): void;
+
+    getAge(): number ;
+    setAge(age: number): void;
+
+    getFullName(surname: string): string;
+    getInfo(): string ;
+}
+
+class User implements IUser{
     // default = public
     private static counter: number = 0;
  
@@ -64,45 +78,157 @@ class User{
     }
 
     // default = by constructor(with Модификатор доступа)
-    readonly int : number;
-    private _name : string;
-    private _age : number;
+    private id : number;
+    private name : string;
+    private age : number;
 
-    public get name(): string {
-        return this._name;
-    }
-    public set name(name: string) {
-        this._name = name;
+    public getId(): number {
+        return this.id;
     }
 
-    public get age(): number {
-        return this._age;
+    public getName(): string {
+        return this.name;
     }
-    public set age(age: number) {
-        this._age = age;
+    public setName(name: string) {
+        this.name = name;
+    }
+
+    public getAge(): number {
+        return this.age;
+    }
+    public setAge(age: number) {
+        this.age = age;
     }
 
     constructor(
         /*private*/ name:string,
         /*private*/ age: number
         ){
+        this.id = User.counter;
         this.name = name;
         this.age = age;
+
         User.counter++;
     }
-    
+    getFullName(username: string): string {
+        return this.name + " " + username;
+    }
+
     getInfo(): string {
-        return "Имя: " + this.name + ", возраст: " + this.age;
+        return "Id: " + this.id +", Имя: " + this.name + ", возраст: " + this.age;
     }
 }
 
 //in extendable classes need ЯВНО call super(...);
 
-let first : User = new User("first", 1);
-let tom : User = new User("Том", 15);
+let first : IUser  = new User("first", 1);
+let tom : IUser = new User("Том", 15);
 
-tom.name = "Rename";   // срабатывает set-метод
-console.log(tom.name);  // срабатывает get-метод
+tom.setName("Rename");
+console.log(tom.getName);
 
 console.log(tom.getInfo());
-el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();
+el.innerHTML = tom.getInfo();
+
+//----------------------------------------------------
+interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+let p: Point = { x: 10, y: 20 };
+console.log(p);
+//----------------------------------------------------
+interface ISingleUser {
+    id: number;
+    name: string;
+    age?: number;
+    getFullName?(surname: string): string;
+}
+
+let employee: ISingleUser = {
+    id: -1, 
+    name: "Alice",
+    age: 23,
+    getFullName : function (surname: string): string {
+        return this.name + " " + surname;
+    }
+}
+let manager: ISingleUser = {
+    id: -2, 
+    name: "Tom"
+}
+function buildUser(userId: number, userName: string): ISingleUser {
+    return { id: userId, name: userName };
+}
+let worker = buildUser(-3, "Bill");
+
+function getEmployeeInfo(user: ISingleUser): void {
+    console.log("id: " + user.id);
+    console.log("name: " + user.name)
+
+    let fullName = employee.getFullName("Tompson");
+    console.log(fullName); // Alice Tompson
+}
+getEmployeeInfo(employee);
+//-------------------------------------------------------------
+// Интерфейсы функций
+interface FullNameBuilder {
+    (name: string, surname: string): string;
+}
+ 
+let simpleBuilder: FullNameBuilder = function (name:string, surname: string): string {
+        return "Mr. " + name + " " + surname;
+}
+ 
+let fullName = simpleBuilder("Bob", "Simpson");
+console.log(fullName); // Mr. Bob Simpson
+//-------------------------------------------------------------
+// Интерфейсы массивов:
+// может индексироваться с помощью - number.
+// данный объект должен хранить - string.
+interface StringArray {
+    [index: number]: string;
+}
+ 
+let phones: StringArray = ["iPhone 7", "HTC 10", "HP Elite x3"];
+ 
+let myPhone: string = phones[0];
+console.log(myPhone);
+//-------------------------------------------------------------
+// EXAMPLE
+// может индексироваться с помощью - string.
+// данный объект должен хранить - string.
+interface Dictionary {
+    [index: string]: string;
+}
+ 
+var colors: Dictionary = {};
+colors["red"] = "#ff0000";
+colors["green"] = "#00ff00";
+colors["blue"] = "#0000ff";
+ 
+console.log(colors["red"]);
+//-------------------------------------------------------------
+// Гибридные интерфейсы
+interface PersonInfo {
+    (name: string, surname: string):void;
+    fullName: string;
+    password: string;
+    authenticate(): void;
+}
+ 
+function personBuilder(): PersonInfo {
+    let person = <PersonInfo> function (name: string, surname: string): void{
+        person.fullName = name + " " + surname;
+    };
+    person.authenticate = function () {
+        console.log(person.fullName + " входит в систему с паролем " + person.password);
+    };
+    return person;
+}
+ 
+let humon : PersonInfo = personBuilder();
+humon("Tom", "Simpson");
+humon.password = "qwerty"; 
+humon.authenticate();
+//-------------------------------------------------------------
