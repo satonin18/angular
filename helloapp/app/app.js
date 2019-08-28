@@ -1,15 +1,10 @@
-/// <reference path="globals.d.ts" />
-var Utility = /** @class */ (function () {
-    function Utility() {
-    }
-    Utility.displayGlobalVar = function () {
-        console.log(globalVar);
-        display();
-        for (var i = 0; i < points.length; i++)
-            console.log("Точка с координатами X=" + points[i].X + " Y=" + points[i].Y);
-    };
-    return Utility;
-}());
-window.onload = function () {
-    Utility.displayGlobalVar();
-};
+/// <reference path="@types/jquery/index.d.ts" />
+// $(document).ready(() => {
+//     $("#content").html("<h1>Привет мир</h1>");
+// });
+// $(() => {
+//     $("#content").html("<h1>Привет мир</h1>");
+// });
+$(function () {
+    $("#alertBtn").click(function (e) { $("#content").html("<h2>Привет мир</h2>"); });
+});

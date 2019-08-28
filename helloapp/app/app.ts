@@ -1,13 +1,13 @@
-/// <reference path="globals.d.ts" />
+/// <reference path="@types/jquery/index.d.ts" />
  
-class Utility {
-    static displayGlobalVar() {
-        console.log(globalVar);
-        display();
-        for (var i = 0; i < points.length; i++)
-            console.log("Точка с координатами X=" + points[i].X + " Y=" + points[i].Y);
-    }
-}
-window.onload = () => {
-    Utility.displayGlobalVar();
-};
+// $(document).ready(() => {
+//     $("#content").html("<h1>Привет мир</h1>");
+// });
+
+// $(() => {
+//     $("#content").html("<h1>Привет мир</h1>");
+// });
+
+$(() => {
+    $("#alertBtn").click((e) => { $("#content").html("<h2>Привет мир</h2>"); });
+});
