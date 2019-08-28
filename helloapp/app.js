@@ -7,4 +7,5 @@ var User = /** @class */ (function () {
     return User;
 }());
 var tom = new User("Том", 29);
+console.log("Имя: ", tom.name, " возраст: ", tom.age);
 el.innerHTML = "Имя: " + tom.name + " возраст: " + tom.age;

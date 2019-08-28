@@ -10,4 +10,5 @@ class User{
     }
 }
 var tom : User = new User("Том", 29);
+console.log("Имя: ", tom.name, " возраст: ", tom.age);
 el.innerHTML="Имя: " + tom.name + " возраст: " + tom.age;
