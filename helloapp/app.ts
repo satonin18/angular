@@ -73,9 +73,11 @@ namespace Data{
         }
     }
 }
- 
-let tom = new Data.Personnel.Employee("Tom")
+import employee = Data.Personnel.Employee;
+import client = Data.Clients.VipClient; 
+
+let tom = new employee("Tom")
 console.log(tom.name);
  
-let sam = new Data.Clients.VipClient("Sam");
+let sam = new client("Sam");
 console.log(sam.name);
