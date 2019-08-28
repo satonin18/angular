@@ -55,19 +55,36 @@ let koffSum = (x: number, y: number) => {
 */
 var el = this.document.getElementById("content");
 var User = /** @class */ (function () {
-    // default = by constructor(with Модификатор доступа)
-    //protected name : string;
-    //protected age : number;
-    function User(name, age) {
+    function User(
+    /*private*/ name, 
+    /*private*/ age) {
         this.name = name;
         this.age = age;
-        //this.name = name;
-        //this.age = age;
         User.counter++;
     }
     User.getCounter = function () {
         return User.counter;
     };
+    Object.defineProperty(User.prototype, "name", {
+        get: function () {
+            return this._name;
+        },
+        set: function (name) {
+            this._name = name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "age", {
+        get: function () {
+            return this._age;
+        },
+        set: function (age) {
+            this._age = age;
+        },
+        enumerable: true,
+        configurable: true
+    });
     User.prototype.getInfo = function () {
         return "Имя: " + this.name + ", возраст: " + this.age;
     };
@@ -77,5 +94,7 @@ var User = /** @class */ (function () {
 }());
 var first = new User("first", 1);
 var tom = new User("Том", 15);
+tom.name = "Rename"; // срабатывает set-метод
+console.log(tom.name); // срабатывает get-метод
 console.log(tom.getInfo());
 el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();

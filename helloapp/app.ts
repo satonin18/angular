@@ -64,14 +64,30 @@ class User{
     }
 
     // default = by constructor(with Модификатор доступа)
-    //protected name : string;
-    //protected age : number;
+    readonly int : number;
+    private _name : string;
+    private _age : number;
+
+    public get name(): string {
+        return this._name;
+    }
+    public set name(name: string) {
+        this._name = name;
+    }
+
+    public get age(): number {
+        return this._age;
+    }
+    public set age(age: number) {
+        this._age = age;
+    }
+
     constructor(
-        private name:string,
-        private age: number
+        /*private*/ name:string,
+        /*private*/ age: number
         ){
-        //this.name = name;
-        //this.age = age;
+        this.name = name;
+        this.age = age;
         User.counter++;
     }
     
@@ -81,5 +97,9 @@ class User{
 }
 let first : User = new User("first", 1);
 let tom : User = new User("Том", 15);
+
+tom.name = "Rename";   // срабатывает set-метод
+console.log(tom.name);  // срабатывает get-метод
+
 console.log(tom.getInfo());
 el.innerHTML = tom.getInfo() + " User.getCounter() = " + User.getCounter();
