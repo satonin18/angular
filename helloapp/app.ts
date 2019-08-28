@@ -57,24 +57,14 @@ let koffSum = (x: number, y: number) => {
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
 
-namespace Personnel {
-    export interface IUser{
-        displayInfo() : any;
-    }
-    export class Employee {
-        constructor(public name: string){
-        }
-    }
-    export function work(emp: Employee) : void{
-        console.log(emp.name, "is working");
-    }
-    export let defaultUser = { name: "Kate" }
-}
-
-let alice = new Personnel.Employee("Alice");
-console.log(alice.name);    // Alice
-
+/// <reference path="personnel.ts" />
+ 
 let tom = new Personnel.Employee("Tom")
-Personnel.work(tom);                    // Tom is working
+console.log(tom.name);
+ 
+let sam = new Personnel.Manager("Sam");
+console.log(sam.name);
 
-console.log(Personnel.defaultUser.name);    // Kate
+//	comand line (--outFile target.js sourse1.ts source2.ts source3.ts )
+// tsc --outFile app.js app.ts personnel.ts
+// or tsconfig.ts
