@@ -54,140 +54,47 @@ let koffSum = (x: number, y: number) => {
 
 */
 var el = this.document.getElementById("content");
-var User = /** @class */ (function () {
-    function User(
-    /*private*/ name, 
-    /*private*/ age) {
-        this.id = User.counter;
-        this.name = name;
-        this.age = age;
-        User.counter++;
+var Animal = /** @class */ (function () {
+    function Animal() {
     }
-    User.getCounter = function () {
-        return User.counter;
+    Animal.prototype.feed = function () {
+        console.log("кормим животное");
     };
-    User.prototype.getId = function () {
-        return this.id;
-    };
-    User.prototype.getName = function () {
-        return this.name;
-    };
-    User.prototype.setName = function (name) {
-        this.name = name;
-    };
-    User.prototype.getAge = function () {
-        return this.age;
-    };
-    User.prototype.setAge = function (age) {
-        this.age = age;
-    };
-    User.prototype.getFullName = function (username) {
-        return this.name + " " + username;
-    };
-    User.prototype.getInfo = function () {
-        return "Id: " + this.id + ", Имя: " + this.name + ", возраст: " + this.age;
-    };
-    // default = public
-    User.counter = 0;
-    return User;
+    return Animal;
 }());
-//in extendable classes need ЯВНО call super(...);
-var first = new User("first", 1);
-var tom = new User("Том", 15);
-tom.setName("Rename");
-console.log(tom.getName);
-console.log(tom.getInfo());
-el.innerHTML = tom.getInfo();
-var p = { x: 10, y: 20 };
-console.log(p);
-var employee = {
-    id: -1,
-    name: "Alice",
-    age: 23,
-    getFullName: function (surname) {
-        return this.name + " " + surname;
+var MyTransport = /** @class */ (function () {
+    function MyTransport() {
+        this.speed = 0;
     }
-};
-var manager = {
-    id: "manager",
-    name: "Tom"
-};
-function buildUser(userId, userName) {
-    return { id: userId, name: userName };
-}
-var worker = buildUser(-3, "Bill");
-function getEmployeeInfo(user) {
-    console.log("id: " + user.id);
-    console.log("name: " + user.name);
-    var fullName = employee.getFullName("Tompson");
-    console.log(fullName); // Alice Tompson
-}
-getEmployeeInfo(employee);
-var simpleBuilder = function (name, surname) {
-    return "Mr. " + name + " " + surname;
-};
-var fullName = simpleBuilder("Bob", "Simpson");
-console.log(fullName); // Mr. Bob Simpson
-var phones = ["iPhone 7", "HTC 10", "HP Elite x3"];
-var myPhone = phones[0];
-console.log(myPhone);
-var colors = {};
-colors["red"] = "#ff0000";
-colors["green"] = "#00ff00";
-colors["blue"] = "#0000ff";
-console.log(colors["red"]);
-function personBuilder() {
-    var person = function (name, surname) {
-        person.fullName = name + " " + surname;
+    MyTransport.prototype.move = function () {
+        if (this.speed == 0) {
+            console.log("Стоим на месте");
+        }
+        else if (this.speed > 0) {
+            console.log("Перемещаемся со скоростью " + this.speed + " км/ч");
+        }
     };
-    person.authenticate = function () {
-        console.log(person.fullName + " входит в систему с паролем " + person.password);
-    };
-    return person;
-}
-var humon = personBuilder();
-humon("Tom", "Simpson");
-humon.password = "qwerty";
-humon.authenticate();
-//-------------------------------------------------------------
-// Обобщения
-function getId(id) {
-    return id;
-}
-var result1 = getId(5);
-console.log(result1);
-var result2 = getId("abc");
-console.log(result2);
-//-------------------------------------------------------------
-var UserGeneric = /** @class */ (function () {
-    function UserGeneric(id) {
-        this._id = id;
-    }
-    UserGeneric.prototype.getId = function () {
-        return this._id;
-    };
-    return UserGeneric;
+    return MyTransport;
 }());
-var h = new UserGeneric(3);
-console.log(tom.getId()); // возвращает number
-var alice = new UserGeneric("vsf");
-console.log(alice.getId()); // возвращает string
-var u = new UserGeneric(3);
-console.log(u.getId());
-//u = new UserGeneric<string>("vsf"); // ошибка
-//-------------------------------------------------------------
-// Ключевое слово new
-// function UserFactory<T>(): T {
-//     return new T(); // ошибка компиляции
-// }
-function userFactory(type) {
-    return new type();
-}
-var UserGenericNew = /** @class */ (function () {
-    function UserGenericNew() {
-        console.log("создан объект UserGenericNew");
+var Horse = /** @class */ (function () {
+    function Horse() {
+        this.speed = 0;
     }
-    return UserGenericNew;
+    return Horse;
 }());
-var user = userFactory(UserGenericNew);
-//-------------------------------------------------------------
+function applyMixins(derivedCtor, baseCtors) {
+    baseCtors.forEach(function (baseCtor) {
+        Object.getOwnPropertyNames(baseCtor.prototype)
+            .forEach(function (name) {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}
+applyMixins(Horse, [Animal, MyTransport]);
+var pony = new Horse();
+pony.feed();
+pony.move();
+pony.speed = 4;
+pony.move();
+// console.log(tom.getInfo());
+// el.innerHTML = tom.getInfo();
