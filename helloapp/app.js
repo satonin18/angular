@@ -38,6 +38,20 @@ function getName(firstName: string,
     else
         return firstName;
 }
+
+let f: (x:string, y:string) => string;
+f = getName;
+
+//(параметры) => тело функции.
+let getName = (a: string, b: string) => a + b;
+let GenericSum = (a, b) => a + b;
+let square = x => x * x;
+let getHello = () => "hello world";
+let koffSum = (x: number, y: number) => {
+    x *= 2;
+    return x + y;
+};
+
 */
 var el = this.document.getElementById("content");
 var User = /** @class */ (function () {
