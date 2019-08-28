@@ -53,48 +53,26 @@ let koffSum = (x: number, y: number) => {
 };
 
 */
-var el = this.document.getElementById("content");
-var Animal = /** @class */ (function () {
-    function Animal() {
-    }
-    Animal.prototype.feed = function () {
-        console.log("кормим животное");
-    };
-    return Animal;
-}());
-var MyTransport = /** @class */ (function () {
-    function MyTransport() {
-        this.speed = 0;
-    }
-    MyTransport.prototype.move = function () {
-        if (this.speed == 0) {
-            console.log("Стоим на месте");
-        }
-        else if (this.speed > 0) {
-            console.log("Перемещаемся со скоростью " + this.speed + " км/ч");
-        }
-    };
-    return MyTransport;
-}());
-var Horse = /** @class */ (function () {
-    function Horse() {
-        this.speed = 0;
-    }
-    return Horse;
-}());
-function applyMixins(derivedCtor, baseCtors) {
-    baseCtors.forEach(function (baseCtor) {
-        Object.getOwnPropertyNames(baseCtor.prototype)
-            .forEach(function (name) {
-            derivedCtor.prototype[name] = baseCtor.prototype[name];
-        });
-    });
-}
-applyMixins(Horse, [Animal, MyTransport]);
-var pony = new Horse();
-pony.feed();
-pony.move();
-pony.speed = 4;
-pony.move();
+// let el = this.document.getElementById("content");
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
+var Personnel;
+(function (Personnel) {
+    var Employee = /** @class */ (function () {
+        function Employee(name) {
+            this.name = name;
+        }
+        return Employee;
+    }());
+    Personnel.Employee = Employee;
+    function work(emp) {
+        console.log(emp.name, "is working");
+    }
+    Personnel.work = work;
+    Personnel.defaultUser = { name: "Kate" };
+})(Personnel || (Personnel = {}));
+var alice = new Personnel.Employee("Alice");
+console.log(alice.name); // Alice
+var tom = new Personnel.Employee("Tom");
+Personnel.work(tom); // Tom is working
+console.log(Personnel.defaultUser.name); // Kate

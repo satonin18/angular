@@ -53,49 +53,28 @@ let koffSum = (x: number, y: number) => {
 };
 
 */
-let el = this.document.getElementById("content");
-
-class Animal {
-    feed(): void {
-        console.log("кормим животное");
-    }
-}
- 
-class MyTransport {
-    speed: number=0;
-    move(): void {
-        if (this.speed == 0) {
-            console.log("Стоим на месте");
-        }
-        else if (this.speed > 0) {
-            console.log("Перемещаемся со скоростью " + this.speed + " км/ч");
-        }
-    }
-}
- 
-class Horse implements Animal, MyTransport {
-    speed: number=0;
-    feed: () => void;
-    move: () => void;
-}
- 
-function applyMixins(derivedCtor: any, baseCtors: any[]) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype)
-            .forEach(name => {
-                derivedCtor.prototype[name] = baseCtor.prototype[name];
-            });
-    });
-}
- 
-applyMixins(Horse, [Animal, MyTransport]);
- 
-let pony: Horse = new Horse();
-pony.feed();
-pony.move();
-pony.speed = 4;
-pony.move();
-
+// let el = this.document.getElementById("content");
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
 
+namespace Personnel {
+    export interface IUser{
+        displayInfo() : any;
+    }
+    export class Employee {
+        constructor(public name: string){
+        }
+    }
+    export function work(emp: Employee) : void{
+        console.log(emp.name, "is working");
+    }
+    export let defaultUser = { name: "Kate" }
+}
+
+let alice = new Personnel.Employee("Alice");
+console.log(alice.name);    // Alice
+
+let tom = new Personnel.Employee("Tom")
+Personnel.work(tom);                    // Tom is working
+
+console.log(Personnel.defaultUser.name);    // Kate
