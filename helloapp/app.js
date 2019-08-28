@@ -1,20 +1,3 @@
-var Personnel;
-(function (Personnel) {
-    var Employee = /** @class */ (function () {
-        function Employee(name) {
-            this.name = name;
-        }
-        return Employee;
-    }());
-    Personnel.Employee = Employee;
-    var Manager = /** @class */ (function () {
-        function Manager(name) {
-            this.name = name;
-        }
-        return Manager;
-    }());
-    Personnel.Manager = Manager;
-})(Personnel || (Personnel = {}));
 /*
 Boolean:
 Number: + PREFIX: 0x(16) 0o(8) 0b(2);
@@ -73,11 +56,30 @@ let koffSum = (x: number, y: number) => {
 // let el = this.document.getElementById("content");
 // console.log(tom.getInfo());
 // el.innerHTML = tom.getInfo();
-/// <reference path="personnel.ts" />
-var tom = new Personnel.Employee("Tom");
+var Data;
+(function (Data) {
+    var Personnel;
+    (function (Personnel) {
+        var Employee = /** @class */ (function () {
+            function Employee(name) {
+                this.name = name;
+            }
+            return Employee;
+        }());
+        Personnel.Employee = Employee;
+    })(Personnel = Data.Personnel || (Data.Personnel = {}));
+    var Clients;
+    (function (Clients) {
+        var VipClient = /** @class */ (function () {
+            function VipClient(name) {
+                this.name = name;
+            }
+            return VipClient;
+        }());
+        Clients.VipClient = VipClient;
+    })(Clients = Data.Clients || (Data.Clients = {}));
+})(Data || (Data = {}));
+var tom = new Data.Personnel.Employee("Tom");
 console.log(tom.name);
-var sam = new Personnel.Manager("Sam");
+var sam = new Data.Clients.VipClient("Sam");
 console.log(sam.name);
-//	comand line (--outFile target.js sourse1.ts source2.ts source3.ts )
-// tsc --outFile app.js app.ts personnel.ts
-// or tsconfig.ts
