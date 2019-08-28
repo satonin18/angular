@@ -1,15 +1,16 @@
+"use strict";
 /*
-Boolean: 
+Boolean:
 Number: + PREFIX: 0x(16) 0o(8) 0b(2);
 String: + TEMPLATE: `Имя: ${varName1}, Возраст: ${varName2}`
         + manyLineText (LOL)    `Hello World!
                                 Goob bye World!`;
 
-Array<Type>: 
+Array<Type>:
 Type[]
 
 Tuple[Type1, Type2]: кортежи
-Enum: P.S. stupit store int(can set self number) 
+Enum: P.S. stupit store int(can set self number)
 
 Any: произвольный тип(as in JS)
 
@@ -33,16 +34,16 @@ function getName(firstName: string,
     lastName: string = default_Username()) {
     ...nameArray: string[]) {
 
-    if (lastName)
-        return firstName + " " + lastName;
-    else
-        return firstName;
+    if (lastName)
+        return firstName + " " + lastName;
+    else
+        return firstName;
 }
 
 let f: (x:string, y:string) => string;
 f = getName;
 
-//(параметры) => тело функции. 
+//(параметры) => тело функции.
 let getName = (a: string, b: string) => a + b;
 let GenericSum = (a, b) => a + b;
 let square = x => x * x;
@@ -70,19 +71,14 @@ RequireJS: RequireJS use синтаксис,известный как асинх
 Browserify: use синтаксис CommonJS
 SystemJS: универсальный загрузчик, может применяться для модулей любого типа
 */
-
-////<reference path="devices.ts"/> 
-
-//use module
-
-import {/*Device,*/ Phone, Call} from "./devices";
-
-let iphone: Phone = new Phone("iPhone X");
-Call(iphone);
-
-// import * as dev from "./devices";
-// let iphone: devPhone = new dev.Phone("iPhone X");
-// dev.Call(iphone);
-
-// import SmartWatch from "./smartwatch";
-// let iwatch: SmartWatch = new SmartWatch();
+exports.__esModule = true;
+var devices_1 = require("./devices");
+var iphone = new devices_1.Phone("iPhone X");
+devices_1.Call(iphone);
+var dev = require("./devices");
+var iphoneXXX = new dev.Phone("iPhone XXX");
+dev.Call(iphoneXXX);
+var smartwatch_1 = require("./smartwatch");
+var iwatch = new smartwatch_1["default"]();
+iwatch.model = "red";
+console.log(iwatch.model);
