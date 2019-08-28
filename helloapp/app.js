@@ -58,9 +58,18 @@ var User = /** @class */ (function () {
     function User(_name, _age) {
         this.name = _name;
         this.age = _age;
+        User.counter++;
     }
+    User.getCounter = function (counter) {
+        return counter;
+    };
+    User.prototype.getInfo = function () {
+        return "Имя: " + this.name + ", возраст: " + this.age;
+    };
+    User.counter = 0;
     return User;
 }());
+var first = new User("first", 5);
 var tom = new User("Том", 5);
-console.log("Имя: ", tom.name, " возраст: ", tom.age);
-el.innerHTML = "Имя: " + tom.name + " возраст: " + tom.age;
+console.log(tom.getInfo());
+el.innerHTML = tom.getInfo() + " User.counter = " + User.counter;
