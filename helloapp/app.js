@@ -19,6 +19,14 @@ Void:
 Never: также представляет отсутствие значения
     и используется в качестве возвращаемого типа функций,
     которые генерируют или возвращают ошибку
+------------------------------------------------------------
+//Union + alias
+type strOrNumType = number | string;
+let unionValue: strOrNumType = "hello work";
+
+if(typeof unionValue === "string")
+    strLength = (<string> unionValue).length;
+    strLength = (unionValue as string).length;
 */
 var el = this.document.getElementById("content");
 var User = /** @class */ (function () {
