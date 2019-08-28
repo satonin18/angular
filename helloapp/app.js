@@ -109,7 +109,7 @@ var employee = {
     }
 };
 var manager = {
-    id: -2,
+    id: "manager",
     name: "Tom"
 };
 function buildUser(userId, userName) {
@@ -149,4 +149,45 @@ var humon = personBuilder();
 humon("Tom", "Simpson");
 humon.password = "qwerty";
 humon.authenticate();
+//-------------------------------------------------------------
+// Обобщения
+function getId(id) {
+    return id;
+}
+var result1 = getId(5);
+console.log(result1);
+var result2 = getId("abc");
+console.log(result2);
+//-------------------------------------------------------------
+var UserGeneric = /** @class */ (function () {
+    function UserGeneric(id) {
+        this._id = id;
+    }
+    UserGeneric.prototype.getId = function () {
+        return this._id;
+    };
+    return UserGeneric;
+}());
+var h = new UserGeneric(3);
+console.log(tom.getId()); // возвращает number
+var alice = new UserGeneric("vsf");
+console.log(alice.getId()); // возвращает string
+var u = new UserGeneric(3);
+console.log(u.getId());
+//u = new UserGeneric<string>("vsf"); // ошибка
+//-------------------------------------------------------------
+// Ключевое слово new
+// function UserFactory<T>(): T {
+//     return new T(); // ошибка компиляции
+// }
+function userFactory(type) {
+    return new type();
+}
+var UserGenericNew = /** @class */ (function () {
+    function UserGenericNew() {
+        console.log("создан объект UserGenericNew");
+    }
+    return UserGenericNew;
+}());
+var user = userFactory(UserGenericNew);
 //-------------------------------------------------------------

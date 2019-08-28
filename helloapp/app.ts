@@ -55,9 +55,9 @@ let koffSum = (x: number, y: number) => {
 */
 let el = this.document.getElementById("content");
 
-interface IUser {
+interface IUser<T> {
     //default public
-    getId(): number ;
+    getId(): T ;
 
     getName(): string ;
     setName(name: string): void;
@@ -69,7 +69,7 @@ interface IUser {
     getInfo(): string ;
 }
 
-class User implements IUser{
+class User implements IUser<number>{
     // default = public
     private static counter: number = 0;
  
@@ -121,8 +121,8 @@ class User implements IUser{
 
 //in extendable classes need ЯВНО call super(...);
 
-let first : IUser  = new User("first", 1);
-let tom : IUser = new User("Том", 15);
+let first : IUser<number>  = new User("first", 1);
+let tom : IUser<number> = new User("Том", 15);
 
 tom.setName("Rename");
 console.log(tom.getName);
@@ -138,14 +138,14 @@ interface Point {
 let p: Point = { x: 10, y: 20 };
 console.log(p);
 //----------------------------------------------------
-interface ISingleUser {
-    id: number;
+interface ISingleUser<T> {
+    id: T;
     name: string;
     age?: number;
     getFullName?(surname: string): string;
 }
 
-let employee: ISingleUser = {
+let employee: ISingleUser<number> = {
     id: -1, 
     name: "Alice",
     age: 23,
@@ -153,23 +153,23 @@ let employee: ISingleUser = {
         return this.name + " " + surname;
     }
 }
-let manager: ISingleUser = {
-    id: -2, 
+let manager: ISingleUser<string> = {
+    id: "manager", 
     name: "Tom"
 }
-function buildUser(userId: number, userName: string): ISingleUser {
+function buildUser(userId: number, userName: string): ISingleUser<number> {
     return { id: userId, name: userName };
 }
 let worker = buildUser(-3, "Bill");
 
-function getEmployeeInfo(user: ISingleUser): void {
+function getEmployeeInfo<T>(user: ISingleUser<T>): void {
     console.log("id: " + user.id);
     console.log("name: " + user.name)
 
     let fullName = employee.getFullName("Tompson");
     console.log(fullName); // Alice Tompson
 }
-getEmployeeInfo(employee);
+getEmployeeInfo<number>(employee);
 //-------------------------------------------------------------
 // Интерфейсы функций
 interface FullNameBuilder {
@@ -231,4 +231,53 @@ let humon : PersonInfo = personBuilder();
 humon("Tom", "Simpson");
 humon.password = "qwerty"; 
 humon.authenticate();
+//-------------------------------------------------------------
+// Обобщения
+function getId<T>(id: T): T {
+    return id;
+}
+let result1 = getId<number>(5);
+console.log(result1);
+let result2 = getId<string>("abc");
+console.log(result2);
+//-------------------------------------------------------------
+class UserGeneric<T> {
+ 
+    private _id: T;
+    constructor(id:T) {
+ 
+        this._id=id;
+    }
+    getId(): T {
+ 
+        return this._id;
+    }
+}
+ 
+let h = new UserGeneric<number>(3);
+console.log(tom.getId()); // возвращает number
+ 
+let alice = new UserGeneric<string>("vsf");
+console.log(alice.getId()); // возвращает string
+
+let u = new UserGeneric<number>(3);
+console.log(u.getId());
+//u = new UserGeneric<string>("vsf"); // ошибка
+//-------------------------------------------------------------
+// Ключевое слово new
+
+// function UserFactory<T>(): T {
+//     return new T(); // ошибка компиляции
+// }
+function userFactory<T>(type: { new (): T; }): T {
+    return new type();
+}
+ 
+class UserGenericNew {
+    constructor() {
+        console.log("создан объект UserGenericNew");
+    }
+}
+ 
+let user : UserGenericNew = userFactory(UserGenericNew);
 //-------------------------------------------------------------
