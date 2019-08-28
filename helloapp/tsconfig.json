@@ -1,0 +1,22 @@
+{
+    // "compileOnSave": true,
+    "compilerOptions": {
+        "watch" : true,
+        // "target": "es5",
+        // "removeComments": true,
+        // "outDir": "js",
+        // "sourceMap": true,
+        // "outFile": "main.js"
+    }
+    // ,
+    // "files":[
+    //     "app.ts",
+    //     "interfaces.ts",
+    //     "classes.ts",
+    // ]
+    // ,
+    // "exclude":[
+    //     "wwwroot",
+    //     "node_modules"
+    // ]
+}
