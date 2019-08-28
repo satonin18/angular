@@ -95,6 +95,9 @@ class User{
         return "Имя: " + this.name + ", возраст: " + this.age;
     }
 }
+
+//in extendable classes need ЯВНО call super(...);
+
 let first : User = new User("first", 1);
 let tom : User = new User("Том", 15);
 

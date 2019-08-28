@@ -92,6 +92,7 @@ var User = /** @class */ (function () {
     User.counter = 0;
     return User;
 }());
+//in extendable classes need ЯВНО call super(...);
 var first = new User("first", 1);
 var tom = new User("Том", 15);
 tom.name = "Rename"; // срабатывает set-метод
