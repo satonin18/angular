@@ -4,6 +4,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 /*
 из-за применения декоратора мы, не сможем добавить в класс User
     новое свойство следующим образом:
@@ -11,47 +14,76 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-function deprecated(target, propertyName, descriptor) {
-    console.log("Method is deprecated");
+//Декоратор параметра метода
+function MyParameterDecorator(target, propertyKey, parameterIndex) {
+    // код декоратора
 }
 /*
-target=Функция конструктора класса для статического метода,
-    либо прототип класса для обычного метода.
-
-interface PropertyDescriptor{
-    configurable?: boolean;
-    enumerable?: boolean;
-    value?: any;
-    writable?: boolean;
-    get? (): any;
-    set? (v: any): void;
-}
+Где 1 параметр представляет конструктор класса, если метод статический,
+    либо прототип класса, если метод нестатический.
+А 2 параметр представляет имя параметра.
+И 3 параметр представляет порядковый индекс параметра в списке параметров.
 */
-function log(target, method, descriptor) {
+function logParameter(target, key, index) {
+    var metadataKey = "__log_" + key + "_parameters";
+    if (Array.isArray(target[metadataKey])) {
+        target[metadataKey].push(index);
+        // console.log(`isArray`);
+    }
+    else {
+        target[metadataKey] = [index];
+        // console.log(`! isArray`);
+    }
+}
+function logMethod(target, key, descriptor) {
     var originalMethod = descriptor.value;
     descriptor.value = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        console.log(JSON.stringify(args));
-        var returnValue = originalMethod.apply(this, args);
-        console.log(JSON.stringify(args) + " => " + returnValue);
-        return returnValue;
+        var metadataKey = "__log_" + key + "_parameters";
+        var indices = target[metadataKey];
+        //---
+        console.log("logMethod take " + target[metadataKey]);
+        //---
+        if (Array.isArray(indices)) {
+            for (var i = 0; i < args.length; i++) {
+                if (indices.indexOf(i) !== -1) {
+                    var arg = args[i];
+                    var argStr = JSON.stringify(arg) || arg.toString();
+                    console.log(key + " arg[" + i + "]: " + argStr);
+                }
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        }
+        else {
+            var a = args.map(function (a) { return (JSON.stringify(a) || a.toString()); }).join();
+            var result = originalMethod.apply(this, args);
+            var r = JSON.stringify(result);
+            console.log("Call: " + key + "(" + a + ") => " + r);
+            return result;
+        }
     };
+    return descriptor;
 }
-var Calculator = /** @class */ (function () {
-    function Calculator() {
+var User = /** @class */ (function () {
+    function User(name) {
+        this.name = name;
     }
-    Calculator.prototype.add = function (x, y) {
-        return x + y;
+    User.prototype.setName = function (name) {
+        this.name = name;
+    };
+    User.prototype.print = function () {
+        console.log(this.name);
     };
     __decorate([
-        log
-    ], Calculator.prototype, "add", null);
-    return Calculator;
+        logMethod,
+        __param(0, logParameter)
+    ], User.prototype, "setName", null);
+    return User;
 }());
-var calc = new Calculator();
-var z = calc.add(4, 5);
-z = calc.add(6, 7);
-console.log(z);
+var tom = new User("Tom");
+tom.setName("Bob");
+tom.setName("Sam");
