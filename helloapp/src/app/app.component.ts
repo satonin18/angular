@@ -23,8 +23,9 @@ export class AppComponent implements OnInit {
     ngOnInit(){
           
         // this.http.get('user.json') //Observable<any>
-        this.httpService.getData()
-        // .subscribe((data:User) => this.user=data);
-            .subscribe(data => this.users=data["userList"]);
+        this.httpService.getUsers()
+            // .subscribe((data:User) => this.user=data);
+            // .subscribe(data => this.users=data["userList"]);
+            .subscribe(data => this.users=data);
     }
 }
