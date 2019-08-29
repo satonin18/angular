@@ -2,8 +2,8 @@
     // "compileOnSave": true,
     "compilerOptions": {
         "watch" : true
-        // ,
-        // "target": "es5",// задать версию стандарта JavaScript,
+        ,
+        "target": "es5",// задать версию стандарта JavaScript,
         // // в которую будет компилироваться код TypeScript.
         // // "ES3" (по умолчанию), "ES5", "ES6", "ES2015", "ES2016", "ES2017" или "ESNext"
         // "module": "es2015", //тип модуля, который будет использоваться для компиляции.
@@ -11,7 +11,7 @@
         // "moduleResolution": "node",
         // // "sourceMap": true,
         // "emitDecoratorMetadata": true,
-        // "experimentalDecorators": true,
+        "experimentalDecorators": true,
         // "lib": [ "es2015", "dom" ],
         // "noImplicitAny": true,
         // "suppressImplicitAnyIndexErrors": true,

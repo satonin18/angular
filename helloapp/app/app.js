@@ -1,10 +1,30 @@
-/// <reference path="@types/jquery/index.d.ts" />
-$(document).ready(function () {
-    $("#content").html("<h1>Привет мир</h1>");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/*
+из-за применения декоратора мы, не сможем добавить в класс User
+    новое свойство следующим образом:
+Object.defineProperty(User, 'age', {
+    value: 17
 });
-// $(() => {
-//     $("#content").html("<h1>Привет мир</h1>");
-// });
-// $(() => {
-//     $("#alertBtn").click((e) => { $("#content").html("<h2>Привет мир</h2>"); });
-// });
+*/
+function sealed(constructor) {
+    console.log("sealed decorator_!");
+    Object.seal(constructor); //запрещает расширение прототипа класса User
+    Object.seal(constructor.prototype);
+}
+var User = /** @class */ (function () {
+    function User(name) {
+        this.name = name;
+    }
+    User.prototype.print = function () {
+        console.log(this.name);
+    };
+    User = __decorate([
+        sealed
+    ], User);
+    return User;
+}());
