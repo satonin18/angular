@@ -1,12 +1,17 @@
-import { Component} from '@angular/core';
+import { Component, ContentChild, ElementRef } from '@angular/core';
        
 @Component({
     selector: 'child-comp',
-    template: `<p>{{counter}}</p>`
+    template: `<ng-content></ng-content>
+               <button (click)="change()">Изменить</button>`
 })
-export class ChildComponent{
+export class ChildComponent{ 
      
-    counter: number = 0;
-    increment() { this.counter++; }
-    decrement() { this.counter--; }
+    @ContentChild("headerContent", {static:false})
+    header: ElementRef;
+     
+    change() { 
+        console.log(this.header); 
+        this.header.nativeElement.textContent = "Hell to world!"; 
+    }
 }
