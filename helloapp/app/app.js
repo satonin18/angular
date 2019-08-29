@@ -16,6 +16,17 @@ function sealed(constructor) {
     Object.seal(constructor); //запрещает расширение прототипа класса User
     Object.seal(constructor.prototype);
 }
+function logger(target) {
+    var newConstructor = function (name) {
+        console.log("Creating new instance = " + name);
+        this.name = name;
+        this.age = 18; //ATTATION !
+        this.print = function () {
+            console.log(this.name, this.age);
+        };
+    };
+    return newConstructor;
+}
 var User = /** @class */ (function () {
     function User(name) {
         this.name = name;
@@ -24,7 +35,12 @@ var User = /** @class */ (function () {
         console.log(this.name);
     };
     User = __decorate([
+        logger,
         sealed
     ], User);
     return User;
 }());
+var tom = new User("Tom");
+var bob = new User("Bob");
+tom.print();
+bob.print();
