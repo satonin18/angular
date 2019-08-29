@@ -21,23 +21,25 @@ interface PropertyDescriptor{
     set? (v: any): void;
 }
 */
-function readonly (target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-    descriptor.writable = false;
-};
- 
-class User {
- 
-    name: string;
-    constructor(name: string){
-        this.name = name;
-    }
- 
-    @readonly //if comment, then console.log will change
-    print(): void{
-        console.log(this.name);
+function log(target: Object, method: string, descriptor: PropertyDescriptor){
+    let originalMethod = descriptor.value;
+    descriptor.value = function(...args){
+        console.log(JSON.stringify(args));
+        let returnValue = originalMethod.apply(this, args);
+        console.log(`${JSON.stringify(args)} => ${returnValue}`)
+        return returnValue;
     }
 }
-let tom = new User("Tom");
-tom.print();  // Tom
-tom.print = function(){ console.log("print has been changed");}
-tom.print();  // Tom
+ 
+class Calculator{
+ 
+    @log
+    add(x: number, y: number): number{
+        return x + y;
+    }
+}
+ 
+let calc = new Calculator();
+let z = calc.add(4, 5);
+z = calc.add(6, 7);
+console.log(z);

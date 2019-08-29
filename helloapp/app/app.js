@@ -27,23 +27,31 @@ interface PropertyDescriptor{
     set? (v: any): void;
 }
 */
-function readonly(target, propertyKey, descriptor) {
-    descriptor.writable = false;
+function log(target, method, descriptor) {
+    var originalMethod = descriptor.value;
+    descriptor.value = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        console.log(JSON.stringify(args));
+        var returnValue = originalMethod.apply(this, args);
+        console.log(JSON.stringify(args) + " => " + returnValue);
+        return returnValue;
+    };
 }
-;
-var User = /** @class */ (function () {
-    function User(name) {
-        this.name = name;
+var Calculator = /** @class */ (function () {
+    function Calculator() {
     }
-    User.prototype.print = function () {
-        console.log(this.name);
+    Calculator.prototype.add = function (x, y) {
+        return x + y;
     };
     __decorate([
-        readonly //if comment, then console.log will change
-    ], User.prototype, "print", null);
-    return User;
+        log
+    ], Calculator.prototype, "add", null);
+    return Calculator;
 }());
-var tom = new User("Tom");
-tom.print(); // Tom
-tom.print = function () { console.log("print has been changed"); };
-tom.print(); // Tom
+var calc = new Calculator();
+var z = calc.add(4, 5);
+z = calc.add(6, 7);
+console.log(z);
