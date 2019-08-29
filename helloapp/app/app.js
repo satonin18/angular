@@ -10,16 +10,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(User, 'age', {
     value: 17
 });
-*/
-//Декоратор метода доступа
-function decorator(target, propertyName, descriptor) {
-    // код декоратора
-}
-/*
-Где 1 параметр представляет конструктор класса, если метод статический,
-    либо прототип класса, если метод метода.
-2 параметр представляет имя свойства.
-3 параметр представляет объект PropertyDescriptor.
     interface PropertyDescriptor {
         configurable?: boolean;
         enumerable?: boolean;
@@ -29,34 +19,46 @@ function decorator(target, propertyName, descriptor) {
         set?(v: any): void;
     }
 */
-function validator(target, propertyKey, descriptor) {
-    var oldSet = descriptor.set;
-    descriptor.set = function (value) {
-        if (value === "admin") {
-            throw new Error("Invalid value");
+function regex(pattern) {
+    var expression = new RegExp(pattern);
+    return function regex(target, propertyName) {
+        var propertyValue = this[propertyName];
+        // геттер
+        var getter = function () {
+            return propertyValue;
+        };
+        // сеттер
+        var setter = function (newVal) {
+            var isValid = expression.test(newVal);
+            if (isValid === false) {
+                throw new Error("Value " + newVal + " does not match " + pattern);
+            }
+            else {
+                console.log(newVal + " is valid");
+            }
+        };
+        // удаляем свойство
+        if (delete this[propertyName]) {
+            // И создаем новое свойство с геттером и сеттером
+            Object.defineProperty(target, propertyName, {
+                get: getter,
+                set: setter
+            });
         }
-        oldSet.call(this, value);
     };
 }
-var User = /** @class */ (function () {
-    function User(name) {
-        this.name = name;
+var Account = /** @class */ (function () {
+    function Account(email, phone) {
+        this.email = email;
+        this.phone = phone;
     }
-    Object.defineProperty(User.prototype, "name", {
-        get: function () {
-            return this._name;
-        },
-        set: function (n) {
-            this._name = n;
-        },
-        enumerable: true,
-        configurable: true
-    });
     __decorate([
-        validator
-    ], User.prototype, "name", null);
-    return User;
+        regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+    ], Account.prototype, "email", void 0);
+    __decorate([
+        regex("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")
+    ], Account.prototype, "phone", void 0);
+    return Account;
 }());
-var tom = new User("Tom");
-tom.name = "admin"; //throw new Error("Invalid value");
-console.log(tom.name);
+var acc = new Account("bir@gmail.com", "+23451235678");
+acc.email = "bir_iki_yedi";

@@ -4,16 +4,6 @@
 Object.defineProperty(User, 'age', {
     value: 17
 });
-*/
-//Декоратор метода доступа
-function decorator(target: Object, propertyName: string, descriptor: PropertyDescriptor){ 
-    // код декоратора
-}
-/*
-Где 1 параметр представляет конструктор класса, если метод статический,
-    либо прототип класса, если метод метода.
-2 параметр представляет имя свойства.
-3 параметр представляет объект PropertyDescriptor.
     interface PropertyDescriptor {
         configurable?: boolean;
         enumerable?: boolean;
@@ -23,32 +13,48 @@ function decorator(target: Object, propertyName: string, descriptor: PropertyDes
         set?(v: any): void;
     }
 */
-function validator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const oldSet = descriptor.set;
+function regex(pattern: string){
+    let expression = new RegExp(pattern);
+    return function regex(target: Object, propertyName: string){
+        let propertyValue = this[propertyName];
  
-    descriptor.set = function(value: string) {
-        if (value === "admin") {
-            throw new Error("Invalid value");
-        }
- 
-        oldSet.call(this, value);
-    }
-}
-class User {
- 
-    private _name: string;
-    constructor(name: string){
-        this.name = name;
-    }
+        // геттер
+        var getter = function () {
+            return propertyValue;
+        };
+  
+        // сеттер
+        var setter = function (newVal) {
+            let isValid: boolean = expression.test(newVal); 
+            if(isValid === false){
+                throw new Error(`Value ${newVal} does not match ${pattern}`);
+            }
+            else{
+                console.log(`${newVal} is valid`);
+            }
+        };
+        // удаляем свойство
+        if (delete this[propertyName]) {
      
-    public get name(): string {
-        return this._name;
-    }
-    @validator
-    public set name(n: string) {
-        this._name = n;
+            // И создаем новое свойство с геттером и сеттером
+            Object.defineProperty(target, propertyName, {
+                get: getter,
+                set: setter
+            });
+        }
     }
 }
-let tom = new User("Tom");
-tom.name = "admin"; //throw new Error("Invalid value");
-console.log(tom.name);
+class Account{
+ 
+    @regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+    email: string;
+ 
+    @regex("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")
+    phone: string;
+ 
+    constructor(email: string, phone: string){
+        this.email = email; this.phone = phone;
+    }
+}
+let acc = new Account("bir@gmail.com", "+23451235678");
+acc.email = "bir_iki_yedi";
