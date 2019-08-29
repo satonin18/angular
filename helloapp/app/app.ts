@@ -58,3 +58,5 @@ class Account{
 }
 let acc = new Account("bir@gmail.com", "+23451235678");
 acc.email = "bir_iki_yedi";
+
+//END TUTORIAL !!!
