@@ -46,6 +46,12 @@ var User = /** @class */ (function () {
     User.prototype.print = function () {
         console.log(this.name);
     };
+    User.prototype.getName = function () {
+        return this.name;
+    };
+    User.prototype.setName = function (name) {
+        this.name = name;
+    };
     __decorate([
         format
     ], User.prototype, "name", void 0);
@@ -55,3 +61,8 @@ var tom = new User("Tom");
 tom.print();
 tom.name = "Tommy";
 tom.print();
+console.log('-----------------------');
+console.log(tom.getName());
+tom.setName("NewName");
+tom.print();
+console.log(tom.getName());

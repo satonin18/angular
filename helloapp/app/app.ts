@@ -49,8 +49,22 @@ class User {
     print():void{
         console.log(this.name);
     }
+
+    getName() :string{
+        return this.name;
+    }
+    setName(name: string) :void{
+        this.name = name;
+    }
 }
 let tom = new User("Tom");
 tom.print();
 tom.name = "Tommy";
 tom.print();
+
+console.log('-----------------------');
+
+console.log(tom.getName());
+tom.setName("NewName");
+tom.print();
+console.log(tom.getName());
