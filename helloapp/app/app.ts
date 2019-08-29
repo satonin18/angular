@@ -5,66 +5,50 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-//Декоратор свойства
-function MyPropertyDecorator(target: Object, propertyKey: string){
+//Декоратор метода доступа
+function decorator(target: Object, propertyName: string, descriptor: PropertyDescriptor){ 
     // код декоратора
 }
 /*
 Где 1 параметр представляет конструктор класса, если метод статический,
-    либо прототип класса, если метод нестатический.
-А 2 параметр представляет имя свойства.
+    либо прототип класса, если метод метода.
+2 параметр представляет имя свойства.
+3 параметр представляет объект PropertyDescriptor.
+    interface PropertyDescriptor {
+        configurable?: boolean;
+        enumerable?: boolean;
+        value?: any;
+        writable?: boolean;
+        get?(): any;
+        set?(v: any): void;
+    }
 */
-function format(target: Object, propertyKey: string){
-     
-    let _val = this[propertyKey];   // получаем значение свойства
+function validator(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    const oldSet = descriptor.set;
  
-    // геттер
-    var getter = function () {
-        return "Mr./Ms." + _val;
-    };
-  
-    // сеттер
-    var setter = function (newVal) {
-        _val = newVal;
-    };
-  
-    // удаляем свойство
-    if (delete this[propertyKey]) {
-  
-        // И создаем новое свойство с геттером и сеттером
-        Object.defineProperty(target, propertyKey, {
-            get: getter,
-            set: setter
-        });
+    descriptor.set = function(value: string) {
+        if (value === "admin") {
+            throw new Error("Invalid value");
+        }
+ 
+        oldSet.call(this, value);
     }
 }
- 
 class User {
  
-    @format
-    name: string;
+    private _name: string;
     constructor(name: string){
         this.name = name;
     }
-    print():void{
-        console.log(this.name);
+     
+    public get name(): string {
+        return this._name;
     }
-
-    getName() :string{
-        return this.name;
-    }
-    setName(name: string) :void{
-        this.name = name;
+    @validator
+    public set name(n: string) {
+        this._name = n;
     }
 }
 let tom = new User("Tom");
-tom.print();
-tom.name = "Tommy";
-tom.print();
-
-console.log('-----------------------');
-
-console.log(tom.getName());
-tom.setName("NewName");
-tom.print();
-console.log(tom.getName());
+tom.name = "admin"; //throw new Error("Invalid value");
+console.log(tom.name);

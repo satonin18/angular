@@ -11,58 +11,52 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-//Декоратор свойства
-function MyPropertyDecorator(target, propertyKey) {
+//Декоратор метода доступа
+function decorator(target, propertyName, descriptor) {
     // код декоратора
 }
 /*
 Где 1 параметр представляет конструктор класса, если метод статический,
-    либо прототип класса, если метод нестатический.
-А 2 параметр представляет имя свойства.
-*/
-function format(target, propertyKey) {
-    var _val = this[propertyKey]; // получаем значение свойства
-    // геттер
-    var getter = function () {
-        return "Mr./Ms." + _val;
-    };
-    // сеттер
-    var setter = function (newVal) {
-        _val = newVal;
-    };
-    // удаляем свойство
-    if (delete this[propertyKey]) {
-        // И создаем новое свойство с геттером и сеттером
-        Object.defineProperty(target, propertyKey, {
-            get: getter,
-            set: setter
-        });
+    либо прототип класса, если метод метода.
+2 параметр представляет имя свойства.
+3 параметр представляет объект PropertyDescriptor.
+    interface PropertyDescriptor {
+        configurable?: boolean;
+        enumerable?: boolean;
+        value?: any;
+        writable?: boolean;
+        get?(): any;
+        set?(v: any): void;
     }
+*/
+function validator(target, propertyKey, descriptor) {
+    var oldSet = descriptor.set;
+    descriptor.set = function (value) {
+        if (value === "admin") {
+            throw new Error("Invalid value");
+        }
+        oldSet.call(this, value);
+    };
 }
 var User = /** @class */ (function () {
     function User(name) {
         this.name = name;
     }
-    User.prototype.print = function () {
-        console.log(this.name);
-    };
-    User.prototype.getName = function () {
-        return this.name;
-    };
-    User.prototype.setName = function (name) {
-        this.name = name;
-    };
+    Object.defineProperty(User.prototype, "name", {
+        get: function () {
+            return this._name;
+        },
+        set: function (n) {
+            this._name = n;
+        },
+        enumerable: true,
+        configurable: true
+    });
     __decorate([
-        format
-    ], User.prototype, "name", void 0);
+        validator
+    ], User.prototype, "name", null);
     return User;
 }());
 var tom = new User("Tom");
-tom.print();
-tom.name = "Tommy";
-tom.print();
-console.log('-----------------------');
-console.log(tom.getName());
-tom.setName("NewName");
-tom.print();
-console.log(tom.getName());
+tom.name = "admin"; //throw new Error("Invalid value");
+console.log(tom.name);
