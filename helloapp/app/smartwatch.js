@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var SmartWatch = /** @class */ (function () {
     function SmartWatch() {
     }
     return SmartWatch;
 }());
-exports["default"] = SmartWatch;
+exports.default = SmartWatch;
