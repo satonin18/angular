@@ -1,11 +1,26 @@
-import { Component} from '@angular/core';
-       
+import { Component, OnChanges, SimpleChanges} from '@angular/core';
+      
 @Component({
     selector: 'my-app',
-    template: `<child-comp [(userName)]="name"></child-comp>
-                <div>Выбранное имя: {{name}}</div>`
+    template: `<child-comp [name]="name"></child-comp>
+                <input type="text" [(ngModel)]="name" />
+                <input type="number" [(ngModel)]="age" />`
 })
-export class AppComponent { 
+export class AppComponent implements OnChanges { 
+    name:string="Tom";
+    age:number = 25;
+
+    //изменение свойства age в AppComponent здесь не будет отслеживаться.
+    ngOnChanges(changes: SimpleChanges) {
+      for (let propName in changes) {
+        let chng = changes[propName];
+        let cur  = JSON.stringify(chng.currentValue);
+        let prev = JSON.stringify(chng.previousValue);
+        this.log(`Main `+`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      }
+    }
  
-    name: string = "Tom";
+    private log(msg: string) {
+        console.log(msg);
+    }
 }

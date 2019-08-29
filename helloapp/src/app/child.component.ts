@@ -1,16 +1,26 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-       
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+      
 @Component({
     selector: 'child-comp',
-    template: `<input [ngModel]="userName" (ngModelChange)="onNameChange($event)" />`
+    template: `<p>Привет {{name}}</p>`
 })
-export class ChildComponent{ 
+export class ChildComponent implements OnInit, OnChanges { 
+    @Input() name: string;
+ 
+    constructor(){ this.log(`constructor`); } //1
      
-    @Input() userName:string;
-    @Output() userNameChange = new EventEmitter<string>();
-    onNameChange(model: string){
-         
-        this.userName = model;
-        this.userNameChange.emit(model);
+    ngOnChanges(changes: SimpleChanges) { //2,*
+      for (let propName in changes) {
+        let chng = changes[propName];
+        let cur  = JSON.stringify(chng.currentValue);
+        let prev = JSON.stringify(chng.previousValue);
+        this.log(`Chield `+`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      }
+    }
+
+    ngOnInit() { this.log(`onInit`); } //3
+
+    private log(msg: string) {
+        console.log(msg);
     }
 }
