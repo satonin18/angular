@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpService} from './http.service';
 import {User} from './user';
    
 @Component({
@@ -7,17 +7,20 @@ import {User} from './user';
     template: `<div>
                     <p>Имя пользователя: {{user?.name}}</p>
                     <p>Возраст пользователя: {{user?.age}}</p>
-               </div>`
+               </div>`,
+    providers: [HttpService]
 })
 export class AppComponent implements OnInit { 
    
     user: User;
- 
-    constructor(private http: HttpClient){}
+      
+    // constructor(private http: HttpClient){ }
+    constructor(private httpService: HttpService){}
       
     ngOnInit(){
           
-        this.http.get('user.json') //Observable<any>
-            .subscribe((data:User) => this.user=data);
+        // this.http.get('user.json') //Observable<any>
+        this.httpService.getData()
+        .subscribe((data:User) => this.user=data);
     }
 }
