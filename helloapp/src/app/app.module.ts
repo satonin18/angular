@@ -1,16 +1,3 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent }   from './app.component';
-import { DataModule }   from './data/data.module';
-// import { FormsModule }   from '@angular/forms';
-// import { ChildComponent }   from './child.component';
-   
-@NgModule({
-    imports:      [ BrowserModule, DataModule], //FormsModule
-    declarations: [ AppComponent], //ChildComponent
-    bootstrap:    [ AppComponent ]
-})
-export class AppModule { }
 /*
 declarations: классы представлений (view classes), которые принадлежат модулю.
     Angular имеет три типа классов представлений: компоненты (components), директивы (directives), каналы (pipes)
@@ -23,3 +10,16 @@ providers: классы, создающие сервисы, используем
 
 bootstrap: корневой компонент, который вызывается по умолчанию при загрузке приложения
 */
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
+import { AppComponent }   from './app.component';
+ 
+import { HttpClientModule }   from '@angular/common/http';
+ 
+@NgModule({
+    imports:      [ BrowserModule, FormsModule, HttpClientModule],//HttpModule = depricated
+    declarations: [ AppComponent],
+    bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
