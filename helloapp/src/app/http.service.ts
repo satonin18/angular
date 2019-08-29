@@ -7,6 +7,6 @@ export class HttpService{
     constructor(private http: HttpClient){ }
       
     getData(){
-        return this.http.get('user.json') // Observable<any>
+        return this.http.get('users.json') // Observable<any>
     }
 }

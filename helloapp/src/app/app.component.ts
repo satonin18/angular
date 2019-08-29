@@ -4,15 +4,18 @@ import {User} from './user';
    
 @Component({
     selector: 'my-app',
-    template: `<div>
+    template: `<ul>
+                    <li *ngFor="let user of users">
                     <p>Имя пользователя: {{user?.name}}</p>
                     <p>Возраст пользователя: {{user?.age}}</p>
-               </div>`,
+                    </li>
+                </ul>`,
     providers: [HttpService]
 })
 export class AppComponent implements OnInit { 
    
-    user: User;
+    // user: User;
+    users: User[]=[];
       
     // constructor(private http: HttpClient){ }
     constructor(private httpService: HttpService){}
@@ -21,6 +24,7 @@ export class AppComponent implements OnInit {
           
         // this.http.get('user.json') //Observable<any>
         this.httpService.getData()
-        .subscribe((data:User) => this.user=data);
+        // .subscribe((data:User) => this.user=data);
+            .subscribe(data => this.users=data["userList"]);
     }
 }
