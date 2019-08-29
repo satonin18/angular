@@ -7,6 +7,7 @@ module.exports = {
         'app': './src/main.ts'
       },
    output:{
+      //  path: 'C:\\Users\\saton\\Desktop\\OSPanel\\domains\\mysite\\angular\\helloapp\\public', // путь к каталогу выходных файлов - папка public
       path: path.resolve(__dirname, './public'), // путь к каталогу выходных файлов - папка public
       //  path: path.resolve(__dirname, '/public'), // путь к каталогу выходных файлов - папка public
        publicPath: '/public/',
@@ -28,7 +29,14 @@ module.exports = {
                     } ,
                     'angular2-template-loader'
                ]
-            }
+            }, {
+              test: /\.html$/,
+              loader: 'html-loader'
+            }, {
+                test: /\.css$/,
+                include: path.resolve(__dirname,'src/app'),
+                loader: 'raw-loader'
+              }
        ]
    },
    plugins: [
