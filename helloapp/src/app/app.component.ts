@@ -1,17 +1,20 @@
-import { Component, ViewChild } from '@angular/core';
-import { ChildComponent} from './child.component';
+import { Component, ViewChild, ElementRef } from '@angular/core';
        
 @Component({
     selector: 'my-app',
-    template: `<child-comp></child-comp>
-                <button (click)="increment()">+</button>
-                <button (click)="decrement()">-</button>`
+    template: `<p #nameText>{{name}}</p>
+               <p>{{nameText.textContent}}</p>
+               <button (click)="change()">Изменить</button>`
 })
 export class AppComponent { 
  
-    @ViewChild(ChildComponent, {static: false})
-    private counterComponent: ChildComponent;
+    @ViewChild("nameText", {static: false})
+    nameParagraph: ElementRef;
      
-    increment() { this.counterComponent.increment(); }
-    decrement() { this.counterComponent.decrement(); }
+    name: string = "Tom";
+     
+    change() { 
+        console.log(this.nameParagraph.nativeElement.textContent); 
+        this.nameParagraph.nativeElement.textContent = "hell";
+    }
 }
