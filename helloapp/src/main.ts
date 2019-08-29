@@ -9,3 +9,5 @@ import { AppModule } from './app/app.module';
 
 const platform = platformBrowserDynamic();
 platform.bootstrapModule(AppModule);
+
+//End study Основы Angular
