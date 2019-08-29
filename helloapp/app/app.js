@@ -11,22 +11,26 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-function sealed(constructor) {
-    console.log("sealed decorator_!");
-    Object.seal(constructor); //запрещает расширение прототипа класса User
-    Object.seal(constructor.prototype);
+function deprecated(target, propertyName, descriptor) {
+    console.log("Method is deprecated");
 }
-function logger(target) {
-    var newConstructor = function (name) {
-        console.log("Creating new instance = " + name);
-        this.name = name;
-        this.age = 18; //ATTATION !
-        this.print = function () {
-            console.log(this.name, this.age);
-        };
-    };
-    return newConstructor;
+/*
+target=Функция конструктора класса для статического метода,
+    либо прототип класса для обычного метода.
+
+interface PropertyDescriptor{
+    configurable?: boolean;
+    enumerable?: boolean;
+    value?: any;
+    writable?: boolean;
+    get? (): any;
+    set? (v: any): void;
 }
+*/
+function readonly(target, propertyKey, descriptor) {
+    descriptor.writable = false;
+}
+;
 var User = /** @class */ (function () {
     function User(name) {
         this.name = name;
@@ -34,13 +38,12 @@ var User = /** @class */ (function () {
     User.prototype.print = function () {
         console.log(this.name);
     };
-    User = __decorate([
-        logger,
-        sealed
-    ], User);
+    __decorate([
+        readonly //if comment, then console.log will change
+    ], User.prototype, "print", null);
     return User;
 }());
 var tom = new User("Tom");
-var bob = new User("Bob");
-tom.print();
-bob.print();
+tom.print(); // Tom
+tom.print = function () { console.log("print has been changed"); };
+tom.print(); // Tom

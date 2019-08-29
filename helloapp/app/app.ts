@@ -5,37 +5,39 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-function sealed(constructor: Function) {
-    console.log("sealed decorator_!");
-    Object.seal(constructor); //запрещает расширение прототипа класса User
-    Object.seal(constructor.prototype);
+function deprecated(target: any, propertyName: string, descriptor: PropertyDescriptor){ 
+    console.log("Method is deprecated");
 }
+/*
+target=Функция конструктора класса для статического метода,
+    либо прототип класса для обычного метода.
 
-function logger<TFunction extends Function>(target: TFunction): TFunction{
- 
-    let newConstructor: Function = function(name:string){
-        console.log("Creating new instance = " + name);
-        this.name = name;
-        this.age = 18; //ATTATION !
-        this.print = function():void{
-            console.log(this.name, this.age);
-        }
-    }
-    return <TFunction> newConstructor;
+interface PropertyDescriptor{
+    configurable?: boolean;
+    enumerable?: boolean;
+    value?: any;
+    writable?: boolean;
+    get? (): any;
+    set? (v: any): void;
 }
+*/
+function readonly (target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
+    descriptor.writable = false;
+};
  
-@logger
-@sealed
 class User {
+ 
     name: string;
     constructor(name: string){
         this.name = name;
     }
-    print():void{
+ 
+    @readonly //if comment, then console.log will change
+    print(): void{
         console.log(this.name);
     }
 }
 let tom = new User("Tom");
-let bob = new User("Bob");
-tom.print();
-bob.print();
+tom.print();  // Tom
+tom.print = function(){ console.log("print has been changed");}
+tom.print();  // Tom
