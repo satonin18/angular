@@ -4,9 +4,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 /*
 из-за применения декоратора мы, не сможем добавить в класс User
     новое свойство следующим образом:
@@ -14,76 +11,47 @@ Object.defineProperty(User, 'age', {
     value: 17
 });
 */
-//Декоратор параметра метода
-function MyParameterDecorator(target, propertyKey, parameterIndex) {
+//Декоратор свойства
+function MyPropertyDecorator(target, propertyKey) {
     // код декоратора
 }
 /*
 Где 1 параметр представляет конструктор класса, если метод статический,
     либо прототип класса, если метод нестатический.
-А 2 параметр представляет имя параметра.
-И 3 параметр представляет порядковый индекс параметра в списке параметров.
+А 2 параметр представляет имя свойства.
 */
-function logParameter(target, key, index) {
-    var metadataKey = "__log_" + key + "_parameters";
-    if (Array.isArray(target[metadataKey])) {
-        target[metadataKey].push(index);
-        // console.log(`isArray`);
-    }
-    else {
-        target[metadataKey] = [index];
-        // console.log(`! isArray`);
-    }
-}
-function logMethod(target, key, descriptor) {
-    var originalMethod = descriptor.value;
-    descriptor.value = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        var metadataKey = "__log_" + key + "_parameters";
-        var indices = target[metadataKey];
-        //---
-        console.log("logMethod take " + target[metadataKey]);
-        //---
-        if (Array.isArray(indices)) {
-            for (var i = 0; i < args.length; i++) {
-                if (indices.indexOf(i) !== -1) {
-                    var arg = args[i];
-                    var argStr = JSON.stringify(arg) || arg.toString();
-                    console.log(key + " arg[" + i + "]: " + argStr);
-                }
-            }
-            var result = originalMethod.apply(this, args);
-            return result;
-        }
-        else {
-            var a = args.map(function (a) { return (JSON.stringify(a) || a.toString()); }).join();
-            var result = originalMethod.apply(this, args);
-            var r = JSON.stringify(result);
-            console.log("Call: " + key + "(" + a + ") => " + r);
-            return result;
-        }
+function format(target, propertyKey) {
+    var _val = this[propertyKey]; // получаем значение свойства
+    // геттер
+    var getter = function () {
+        return "Mr./Ms." + _val;
     };
-    return descriptor;
+    // сеттер
+    var setter = function (newVal) {
+        _val = newVal;
+    };
+    // удаляем свойство
+    if (delete this[propertyKey]) {
+        // И создаем новое свойство с геттером и сеттером
+        Object.defineProperty(target, propertyKey, {
+            get: getter,
+            set: setter
+        });
+    }
 }
 var User = /** @class */ (function () {
     function User(name) {
         this.name = name;
     }
-    User.prototype.setName = function (name) {
-        this.name = name;
-    };
     User.prototype.print = function () {
         console.log(this.name);
     };
     __decorate([
-        logMethod,
-        __param(0, logParameter)
-    ], User.prototype, "setName", null);
+        format
+    ], User.prototype, "name", void 0);
     return User;
 }());
 var tom = new User("Tom");
-tom.setName("Bob");
-tom.setName("Sam");
+tom.print();
+tom.name = "Tommy";
+tom.print();
