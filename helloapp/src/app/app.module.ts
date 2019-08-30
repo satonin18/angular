@@ -18,7 +18,7 @@ import { AppComponent }   from './app.component';
 import { HttpClientModule }   from '@angular/common/http';
  
 @NgModule({
-    imports:      [ BrowserModule, FormsModule, HttpClientModule],//HttpModule = depricated
+    imports:      [ BrowserModule, FormsModule, HttpClientModule], //HttpModule = depricated
     declarations: [ AppComponent],
     bootstrap:    [ AppComponent ]
 })

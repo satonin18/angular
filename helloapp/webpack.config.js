@@ -7,9 +7,12 @@ module.exports = {
         'app': './src/main.ts'
       },
    output:{
+    // path: '/public',
       //  path: 'C:\\Users\\saton\\Desktop\\OSPanel\\domains\\mysite\\angular\\helloapp\\public', // путь к каталогу выходных файлов - папка public
-      path: path.resolve(__dirname, './public'), // путь к каталогу выходных файлов - папка public
+      // path: path.resolve(__dirname, './public'), // путь к каталогу выходных файлов - папка public
       //  path: path.resolve(__dirname, '/public'), // путь к каталогу выходных файлов - папка public
+       path: path.resolve(__dirname, 'public'), // путь к каталогу выходных файлов - папка public
+      // path: path.resolve('public'), // путь к каталогу выходных файлов - папка public
        publicPath: '/public/',
        filename: "[name].js" // название создаваемого файла
    },
@@ -17,6 +20,14 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
    module:{
+    // devServer: {
+    //   watchContentBase: true
+    // },
+
+
+
+
+    
     // По умолчанию Webpack понимает только файлы javascript,
     // поэтому для файлов ts необходимы специальные инструменты - загрузчики.
        rules:[   //загрузчик для ts
@@ -43,6 +54,7 @@ module.exports = {
     new webpack.ContextReplacementPlugin(
         /angular(\\|\/)core/,
         path.resolve(__dirname, 'src'), // каталог с исходными файлами
+        // path.resolve('src'), // каталог с исходными файлами
       {} // карта маршрутов
     )
   ]
